@@ -35,11 +35,11 @@
                 controller: 'DetailCtrl'
             }).otherwise('/')
         }).factory('Book', function ($resource) {
-        return $resource('/books/:id', null, {
-            update: {
-                method: 'PUT'
-            }
-        });// query get save delete remove update
+            return $resource('http://localhost:3000/books/:id', null, {
+                update: {
+                    method: 'PUT'
+                }
+            });// query get save delete remove update
     }).controller('HomeCtrl', function ($scope) {
 
     }).controller('ListCtrl', function ($scope, Book) {

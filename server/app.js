@@ -4,6 +4,13 @@ let app = express();
 app.use(bodyParser.json());
 let fs = require('fs');
 const BOOK_FILE_NAME = 'books.json';
+app.use(function(req,res,next){
+    //访问控制 允许哪个域来请求我的服务器接口
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    //允许跨域请求的方法
+    res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE');
+    next();
+});
 //读books
 function read(callback){
     fs.readFile(BOOK_FILE_NAME,'utf8',function(err,data){
