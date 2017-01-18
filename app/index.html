@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" ng-view>
+
+        </div>
+    </div>
+</div>
+<script src="/jquery/dist/jquery.js"></script>
+<script src="/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/angular/angular.js"></script>
+<script src="/angular-route/angular-route.js"></script>
+<script src="/angular-resource/angular-resource.js"></script>
+<script>
+    angular.module('app', ['ngResource', 'ngRoute'])
+        .config(function ($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: 'pages/home.html',
+                controller: 'HomeCtrl'
+            }).when('/list', {
+                templateUrl: 'pages/list.html',
+                controller: 'ListCtrl'
+            }).when('/add', {
+                templateUrl: 'pages/add.html',
+                controller: 'AddCtrl'
+            }).when('/detail/:id', {
+                templateUrl: 'pages/detail.html',
+                controller: 'DetailCtrl'
+            }).otherwise('/')
+        }).factory('Book', function ($resource) {
+        return $resource('/books/:id', null, {
+            update: {
+                method: 'PUT'
+            }
+        });// query get save delete remove update
+    }).controller('HomeCtrl', function ($scope) {
+
+    }).controller('ListCtrl', function ($scope, Book) {
+        $scope.books = Book.query();
+    }).controller('AddCtrl', function ($scope) {
+        $scope.book = {};
+    }).controller('DetailCtrl', function ($scope, $routeParams, Book) {
+        let id = $routeParams.id;
+        Book.get({id}, function (book) {
+            $scope.book = book;
+        });
+    })
+
+
+</script>
+</body>
+</html>
